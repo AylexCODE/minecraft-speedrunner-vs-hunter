@@ -52,7 +52,7 @@ public class SetRoles {
     public static int setSpeedrunner(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         if(Role.INSTANCE.speedrunner == ""){
             Role.INSTANCE.speedrunner = EntityArgumentType.getPlayer(context, "player").getStringifiedName();
-            context.getSource().getPlayer().sendMessage(Text.literal("Speed Runner set to" +EntityArgumentType.getPlayer(context, "player").getStringifiedName()).formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.RED));
+            context.getSource().getPlayer().sendMessage(Text.literal("Speed Runner set to" +EntityArgumentType.getPlayer(context, "player").getStringifiedName()).formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.GREEN));
             return 1;
         }else{
             context.getSource().getPlayer().sendMessage(Text.literal("Finish the game first before setting another speed runner.").formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.RED));

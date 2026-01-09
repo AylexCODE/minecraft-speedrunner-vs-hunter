@@ -42,29 +42,32 @@ public class SpeedRunnerVsHunter implements ModInitializer {
             
             if(target != null){
                 for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()){
-                    updateCompassInInventory(player, target, target.getEntityWorld());
+					if(player.getStringifiedName() == Role.INSTANCE.hunter && !player.getInventory().containsAny(stack -> stack.isOf(Items.COMPASS))){
+						player.getInventory().offerOrDrop(new ItemStack(Items.COMPASS));
+					}
+                    if(player.getStringifiedName() == Role.INSTANCE.hunter) updateCompassInInventory(player, target, target.getEntityWorld());
                 }
             }
         });
 	}
 
-	private void updateCompassInInventory(ServerPlayerEntity player, ServerPlayerEntity target, World world) {
-        for (int i = 0; i < player.getInventory().size(); i++) {
-            ItemStack stack = player.getInventory().getStack(i);
+	private void updateCompassInInventory(ServerPlayerEntity hunter, ServerPlayerEntity speedRunner, World world) {
+        for(int i = 0; i < hunter.getInventory().size(); i++){
+            ItemStack stack = hunter.getInventory().getStack(i);
             
             if(stack.isOf(Items.COMPASS)){
-                GlobalPos targetPlayer = GlobalPos.create(
+                GlobalPos speedRunnerPos = GlobalPos.create(
 					world.getRegistryKey(), 
-					target.getBlockPos()
+					speedRunner.getBlockPos()
 				);
 
 				LodestoneTrackerComponent component = new LodestoneTrackerComponent(
-					Optional.of(targetPlayer), 
+					Optional.of(speedRunnerPos), 
 					false
 				);
 
 				stack.set(DataComponentTypes.CUSTOM_NAME, 
-					Text.literal(target.getStringifiedName()).formatted(Formatting.GOLD, Formatting.BOLD)
+					Text.literal(speedRunner.getStringifiedName()).formatted(Formatting.GOLD, Formatting.BOLD)
 				); stack.set(DataComponentTypes.LODESTONE_TRACKER, component); stack.set(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, false);
             }
         }
