@@ -52,7 +52,10 @@ public class SetRoles {
     public static int setSpeedrunner(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         if(Role.INSTANCE.speedrunner == ""){
             Role.INSTANCE.speedrunner = EntityArgumentType.getPlayer(context, "player").getStringifiedName();
-            context.getSource().getPlayer().sendMessage(Text.literal("Speed Runner set to" +EntityArgumentType.getPlayer(context, "player").getStringifiedName()).formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.GREEN));
+
+            for(ServerPlayerEntity player : context.getSource().getServer().getPlayerManager().getPlayerList()){
+                player.sendMessage(Text.literal("Speed Runner role set to " +EntityArgumentType.getPlayer(context, "player").getStringifiedName()).formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.GREEN));
+            }
             return 1;
         }else{
             context.getSource().getPlayer().sendMessage(Text.literal("Finish the game first before setting another speed runner.").formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.RED));
@@ -63,7 +66,10 @@ public class SetRoles {
     public static int setHunter(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         if(Role.INSTANCE.hunter == ""){
             Role.INSTANCE.hunter = EntityArgumentType.getPlayer(context, "player").getStringifiedName();
-            context.getSource().getPlayer().sendMessage(Text.literal("Hunter set to" +EntityArgumentType.getPlayer(context, "player").getStringifiedName()).formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.RED));
+
+            for(ServerPlayerEntity player : context.getSource().getServer().getPlayerManager().getPlayerList()){
+                player.sendMessage(Text.literal("Hunter role set to " +EntityArgumentType.getPlayer(context, "player").getStringifiedName()).formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.RED));
+            }
             return 1;
         }else{   
             context.getSource().getPlayer().sendMessage(Text.literal("Finish the game first before setting another hunter.").formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.RED));
