@@ -31,36 +31,44 @@ public class SetRoles {
             .executes(SetRoles::setSpeedrunner)))
             .then(CommandManager.literal("Hunter")
             .then(CommandManager.argument("player", EntityArgumentType.player())
-            .executes(SetRoles::setSpeedrunner)))
+            .executes(SetRoles::setHunter)))
             .then(CommandManager.literal("StartSpeedRun")
             .executes(SetRoles::run))
         );
     }
 
     public static int run(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        sendTimedTitle(context.getSource().getServer(), "3", net.minecraft.util.Formatting.RED, 1);
-        sendTimedTitle(context.getSource().getServer(), "2", net.minecraft.util.Formatting.GOLD, 2);
-        sendTimedTitle(context.getSource().getServer(), "1", net.minecraft.util.Formatting.YELLOW, 3);
-        sendTimedTitle(context.getSource().getServer(), "GO!", net.minecraft.util.Formatting.GREEN, 4);
+        if(Role.INSTANCE.speedrunner != "" && Role.INSTANCE.hunter != ""){
+            sendTimedTitle(context.getSource().getServer(), "3", net.minecraft.util.Formatting.RED, 1);
+            sendTimedTitle(context.getSource().getServer(), "2", net.minecraft.util.Formatting.GOLD, 2);
+            sendTimedTitle(context.getSource().getServer(), "1", net.minecraft.util.Formatting.YELLOW, 3);
+            sendTimedTitle(context.getSource().getServer(), "GO!", net.minecraft.util.Formatting.GREEN, 4);
+        }else{
+            context.getSource().getPlayer().sendMessage(Text.literal("Cannot start, no speed runner or hunter is set").formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.RED));
+        }
         return 1;
     }
 
     public static int setSpeedrunner(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        if(Role.INSTANCE.speedrunner != "" && Role.INSTANCE.speedrunner == EntityArgumentType.getPlayer(context, "player").getStringifiedName()){
-            context.getSource().getPlayer().sendMessage(Text.literal("Cannot be both a speed runner and hunter silly.").formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.RED));
+        if(Role.INSTANCE.speedrunner == ""){
+            Role.INSTANCE.speedrunner = EntityArgumentType.getPlayer(context, "player").getStringifiedName();
+            context.getSource().getPlayer().sendMessage(Text.literal("Speed Runner set to" +EntityArgumentType.getPlayer(context, "player").getStringifiedName()).formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.RED));
+            return 1;
+        }else{
+            context.getSource().getPlayer().sendMessage(Text.literal("Finish the game first before setting another speed runner.").formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.RED));
             return 0;
         }
-        Role.INSTANCE.speedrunner = EntityArgumentType.getPlayer(context, "player").getStringifiedName();
-        return 1;
     }
     
     public static int setHunter(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        if(Role.INSTANCE.speedrunner != "" && Role.INSTANCE.speedrunner == EntityArgumentType.getPlayer(context, "player").getStringifiedName()){
-            context.getSource().getPlayer().sendMessage(Text.literal("Cannot be both a speed runner and hunter silly.").formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.RED));
+        if(Role.INSTANCE.hunter == ""){
+            Role.INSTANCE.hunter = EntityArgumentType.getPlayer(context, "player").getStringifiedName();
+            context.getSource().getPlayer().sendMessage(Text.literal("Hunter set to" +EntityArgumentType.getPlayer(context, "player").getStringifiedName()).formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.RED));
+            return 1;
+        }else{   
+            context.getSource().getPlayer().sendMessage(Text.literal("Finish the game first before setting another hunter.").formatted(net.minecraft.util.Formatting.GOLD, net.minecraft.util.Formatting.RED));
             return 0;
         }
-        Role.INSTANCE.hunter = EntityArgumentType.getPlayer(context, "player").getStringifiedName();
-        return 1;
     }
 
     public static void sendTimedTitle(MinecraftServer server, String text, Formatting color, int delay) {

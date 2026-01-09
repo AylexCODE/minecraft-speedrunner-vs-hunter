@@ -18,8 +18,8 @@ import speedrunnervshunter.utils.Role;
 public class SpeedRunOver {
     public static void registerSpeedRunOver(net.minecraft.entity.LivingEntity entity, net.minecraft.entity.damage.DamageSource damageSource) {
         if(entity instanceof ServerPlayerEntity player){
-            launchFirework(player);
-            if(player.getStringifiedName() == Role.INSTANCE.hunter){
+            launchFirework(player); System.out.println(player.getStringifiedName() == Role.INSTANCE.speedrunner + " | " +player.getStringifiedName() + " | " +Role.INSTANCE.speedrunner);
+            if(player.getStringifiedName() == Role.INSTANCE.speedrunner){
                 if(damageSource.getAttacker() instanceof ServerPlayerEntity killer){
                     player.networkHandler.sendPacket(new TitleS2CPacket(
                         Text.literal("YOU LOSE").formatted(net.minecraft.util.Formatting.RED, net.minecraft.util.Formatting.BOLD)
@@ -28,6 +28,8 @@ public class SpeedRunOver {
                     ));
 
                     player.getEntityWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.MASTER, 1.0f, 1.0f);
+                    Role.INSTANCE.speedrunner = "";
+                    Role.INSTANCE.hunter= "";
                 }
             }
         }

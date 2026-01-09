@@ -41,9 +41,8 @@ public class SpeedRunnerVsHunter implements ModInitializer {
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
             ServerPlayerEntity target = server.getPlayerManager().getPlayer(Role.INSTANCE.speedrunner);
             
-            if (target != null) {
-                
-                for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+            if(target != null){
+                for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()){
                     updateCompassInInventory(player, target, target.getEntityWorld());
                 }
             }
@@ -54,7 +53,7 @@ public class SpeedRunnerVsHunter implements ModInitializer {
         for (int i = 0; i < player.getInventory().size(); i++) {
             ItemStack stack = player.getInventory().getStack(i);
             
-            if (stack.isOf(Items.COMPASS)) {
+            if(stack.isOf(Items.COMPASS)){
                 GlobalPos targetPlayer = GlobalPos.create(
 					world.getRegistryKey(), 
 					target.getBlockPos()
