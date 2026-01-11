@@ -33,7 +33,7 @@ public class SpeedRunOver {
                 Role.INSTANCE.speedrunner = "";
                 Role.INSTANCE.hunter= "";
             }else{
-                player.getEntityWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.MASTER, 1.0f, 1.0f);
+                if(!Role.INSTANCE.hunter.isEmpty()) player.getEntityWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.MASTER, 1.0f, 1.0f);
             }
         }
     }
